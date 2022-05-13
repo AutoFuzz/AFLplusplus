@@ -2548,6 +2548,12 @@ static void handle_skipreq(int sig) {
 
 }
 
+static void handle_sigusr2(int sig)
+{
+	printf("handle_sigusr2 called \r\n");
+	afl_state->need_sync_fuzzer = 1;
+}
+
 /* Setup shared map for fuzzing with input via sharedmem */
 
 void setup_testcase_shmem(afl_state_t *afl) {
@@ -2917,6 +2923,10 @@ void setup_signal_handlers(void) {
 
   sa.sa_handler = handle_skipreq;
   sigaction(SIGUSR1, &sa, NULL);
+
+  // Modified for SIGUSR2 by ZYP
+  sa.sa_handler = handle_sigusr2;
+  sigaction(SIGUSR2, &sa, NULL);
 
   /* Things we don't care about. */
 

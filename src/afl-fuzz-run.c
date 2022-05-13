@@ -756,6 +756,8 @@ void sync_fuzzers(afl_state_t *afl) {
 
   closedir(sd);
 
+  afl->need_sync_fuzzer = 0; // Modified for SIGUSR2 by ZYP
+
   // If we are a secondary and no main was found to sync then become the main
   if (unlikely(synced == 0) && likely(entries) &&
       likely(afl->is_secondary_node)) {

@@ -756,6 +756,10 @@ typedef struct afl_state {
    * is too large) */
   struct queue_entry **q_testcase_cache;
 
+  // Modified for SIGUSR2 by ZYP
+  char** saved_argv;
+  u8     need_sync_fuzzer;
+
 #ifdef INTROSPECTION
   char  mutation[8072];
   char  m_tmp[4096];
@@ -764,7 +768,7 @@ typedef struct afl_state {
 #endif
 
 } afl_state_t;
-
+extern afl_state_t *afl_state;
 struct custom_mutator {
 
   const char *name;

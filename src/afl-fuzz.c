@@ -486,7 +486,7 @@ fail:
   #endif
 
 /* Main entry point */
-
+afl_state_t *afl_state;
 int main(int argc, char **argv_orig, char **envp) {
 
   s32 opt, auto_sync = 0 /*, user_set_cache = 0*/;
@@ -517,6 +517,7 @@ int main(int argc, char **argv_orig, char **envp) {
   char **argv = argv_cpy_dup(argc, argv_orig);
 
   afl_state_t *afl = calloc(1, sizeof(afl_state_t));
+  afl_state=afl;
   if (!afl) { FATAL("Could not create afl state"); }
 
   if (get_afl_env("AFL_DEBUG")) { debug = afl->debug = 1; }
@@ -1980,7 +1981,7 @@ int main(int argc, char **argv_orig, char **envp) {
     use_argv = argv + optind;
 
   }
-
+  afl->saved_argv=use_argv;
   if (afl->non_instrumented_mode || afl->fsrv.qemu_mode ||
       afl->fsrv.frida_mode || afl->fsrv.cs_mode || afl->unicorn_mode) {
 
@@ -2513,7 +2514,7 @@ int main(int argc, char **argv_orig, char **envp) {
           if (unlikely(get_cur_time() >
                        (SYNC_TIME >> 1) + afl->last_sync_time)) {
 
-            if (!(sync_interval_cnt++ % (SYNC_INTERVAL / 3))) {
+            if (!(sync_interval_cnt++ % (SYNC_INTERVAL / 3))|| (afl->need_sync_fuzzer == 1)) {
 
               sync_fuzzers(afl);
 

@@ -2857,6 +2857,12 @@ havoc_stage:
 
     }
 
+    // Modified for SIGUSR2 by ZYP
+    if(afl->need_sync_fuzzer==1 && !afl->stop_soon && afl->sync_id){
+          sync_fuzzers(afl);
+      printf("extra sync_fuzzers finished \r\n");
+    }
+
   }
 
   new_hit_cnt = afl->queued_items + afl->saved_crashes;
