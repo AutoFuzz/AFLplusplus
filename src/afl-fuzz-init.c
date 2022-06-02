@@ -2547,11 +2547,12 @@ static void handle_skipreq(int sig) {
   afl_states_request_skip();
 
 }
-
+extern afl_state_t *afl_state;
 static void handle_sigusr2(int sig)
 {
-	printf("handle_sigusr2 called \r\n");
-	afl_state->need_sync_fuzzer = 1;
+  printf("handle_sigusr2 called \r\n");
+  write_stats_file(afl_state,0,0,0,0);
+  afl_state->need_sync_fuzzer = 1;
 }
 
 /* Setup shared map for fuzzing with input via sharedmem */

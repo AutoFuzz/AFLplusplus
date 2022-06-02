@@ -2514,7 +2514,7 @@ int main(int argc, char **argv_orig, char **envp) {
           if (unlikely(get_cur_time() >
                        (SYNC_TIME >> 1) + afl->last_sync_time)) {
 
-            if (!(sync_interval_cnt++ % (SYNC_INTERVAL / 3))|| (afl->need_sync_fuzzer == 1)) {
+            if (!(sync_interval_cnt++ % (SYNC_INTERVAL / 3)) || (afl->need_sync_fuzzer == 1)) {
 
               sync_fuzzers(afl);
 
